@@ -1,0 +1,17 @@
+ctest:
+  stage: test
+  image: rikorose/gcc-cmake:latest
+  script:
+    - mkdir build && cd build
+    - cmake ..
+    - make
+    - ctest -V
+
+valgrind:
+  stage: test
+  image: obraun/algdati-valgrind-ci:latest
+  script:
+    - mkdir build && cd build
+    - cmake -DCMAKE_BUILD_TYPE=Debug ..
+    - make
+    - valgrind --leak-check=full --error-exitcode=1 ./test/testTrie

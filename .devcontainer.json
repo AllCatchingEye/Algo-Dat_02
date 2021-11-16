@@ -1,0 +1,5 @@
+{
+  "name": "AlgDat I --- Blatt 4",
+  "image": "obraun/algdati-valgrind-ci:latest",
+  "extensions": ["ms-vscode.cpptools"]
+}
