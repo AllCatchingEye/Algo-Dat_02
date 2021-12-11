@@ -100,12 +100,38 @@ public:
    }
 
    iterator& operator ++() {
-     static iterator res; //FIXME Dummy-Implementierung korrigieren
-     return res;          //FIXME Dummy-Implementierung korrigieren
+     PathElement* element = &path[path.size() - 1];
+     ++element->iterator;
+
+     while(true) {
+       if (element->iterator != element->branch->children.end()) {
+         if (element->iterator->first == FINAL_SYMBOL) {
+           return *this;
+         } else {
+           PathElement newElement;
+           newElement.branch = static_cast<Branch*>(element->iterator->second);
+           newElement.iterator = newElement.branch->children.begin();
+           path.push_back(newElement);
+
+           element = &path[path.size() - 1];
+         }
+       } else {
+         path.pop_back();
+
+         if (path.empty()) {
+           return *this;
+         } else {
+           element = &path[path.size() - 1];
+           ++element->iterator;
+         }
+       }
+     }
    }
 
    iterator operator ++(int) { // postfix operator, dummy parameter
-     return iterator();  //FIXME Dummy-Implementierung korrigieren
+     iterator it = iterator(*this);
+     ++(*this);
+     return it;
    }
  };
 
