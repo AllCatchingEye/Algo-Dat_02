@@ -61,13 +61,30 @@ private:
 
  Branch *root;
 
-public:
+ struct PathElement {
+   Branch* branch;
+   typename map<E, Node*>::iterator iterator;
 
+   bool operator==(const PathElement& rhs) const {
+     return branch == rhs.branch && iterator == rhs.iterator;
+   }
+
+   bool operator!=(const PathElement& rhs) const {
+     return !(rhs == *this);
+   }
+ };
+
+ typedef vector<PathElement> Path;
+
+public:
  class TrieIterator {
    typedef TrieIterator iterator;
 
+  private:
+   Path path;
+
   public:
-   TrieIterator() {
+   explicit TrieIterator(Path path): path(path) {
    }
 
    value_type operator *() {
