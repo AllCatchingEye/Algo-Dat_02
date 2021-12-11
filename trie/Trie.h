@@ -105,7 +105,7 @@ public:
  typedef TrieIterator iterator;
 
  bool empty() const {
-   return true;    //FIXME Dummy-Implementierung korrigieren
+   return root->empty();
  }
 
  void insert(const value_type& value) {
