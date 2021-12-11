@@ -92,13 +92,11 @@ public:
    }
 
    bool operator !=(const iterator& rhs) const {
-     auto tmp(rhs);      //FIXME Dummy-Implementierung korrigieren
-     return false;       //FIXME Dummy-Implementierung korrigieren
+     return !(*this == rhs);
    }
 
    bool operator ==(const iterator& rhs) const {
-     auto tmp(rhs);      //FIXME Dummy-Implementierung korrigieren
-     return false;       //FIXME Dummy-Implementierung korrigieren
+     return path == rhs.path;
    }
 
    iterator& operator ++() {
