@@ -88,7 +88,7 @@ public:
    }
 
    value_type operator *() {
-     return value_type(); //FIXME Dummy-Implementierung korrigieren
+     return static_cast<Leaf*>(path[path.size() - 1].iterator->second)->data;
    }
 
    bool operator !=(const iterator& rhs) const {
