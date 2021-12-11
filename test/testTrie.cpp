@@ -125,6 +125,11 @@ TEST(IteratorTest, Begin) {
     EXPECT_TRUE(trie.begin() != trie.end());
 }
 
+TEST(IteratorTest, BeginIsEnd) {
+  Trie<string> trie;
+  EXPECT_TRUE(trie.begin() == trie.end());
+}
+
 TEST(IteratorTest, Star) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
