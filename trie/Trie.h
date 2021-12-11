@@ -117,6 +117,8 @@ public:
  }
 
  void clear() {
+   delete root;
+   root = new Branch();
  }
 
  iterator find(const key_type& testElement) {
