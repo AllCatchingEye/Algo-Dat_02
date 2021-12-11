@@ -194,11 +194,34 @@ public:
  }
 
  iterator begin() {
-   return iterator();  //FIXME Dummy-Implementierung korrigieren
+   if (root->empty()) {
+     return end();
+   }
+
+   PathElement element;
+   element.branch = root;
+   element.iterator = root->children.begin();
+
+   Path path = Path();
+   path.push_back(element);
+
+   while (true) {
+     element = path[path.size() - 1];
+
+     if (element.iterator->first == FINAL_SYMBOL) {
+       return iterator(path);
+     } else {
+       PathElement nextElement;
+       nextElement.branch = static_cast<Branch*>(element.iterator->second);
+       nextElement.iterator = nextElement.branch->children.begin();
+
+       path.push_back(nextElement);
+     }
+   }
  }
 
  iterator end() {
-   return iterator();  //FIXME Dummy-Implementierung korrigieren
+   return iterator(Path());
  }
 
  void printOn(ostream& ostr) const {
