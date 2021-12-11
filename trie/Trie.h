@@ -159,7 +159,22 @@ public:
  }
 
  void printOn(ostream& ostr) const {
-   ostr << std::endl;   //FIXME Dummy-Implementierung korrigieren
+   function<void(Branch*, int)> print = [&print, &ostr](Branch* branch, int depth){
+     for (auto childIt = branch->children.begin(); childIt != branch->children.end(); childIt++) {
+       for (int i = 0; i < depth; i++) {
+         ostr << "  ";
+       }
+
+       if (childIt->first != FINAL_SYMBOL) {
+         ostr << childIt->first << endl;
+         print(static_cast<Branch*>(childIt->second), depth + 1);
+       } else {
+         ostr << ":" << static_cast<Leaf*>(childIt->second)->data.second << endl;
+       }
+     }
+   };
+
+   print(root, 0);
  }
 };
 
