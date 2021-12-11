@@ -126,6 +126,12 @@ TEST(BasicTest, Clear) {
     EXPECT_TRUE(trie.empty());
 }
 
+TEST(BasicTest, ClearEmpty) {
+    Trie<string> trie;
+    trie.clear();
+    EXPECT_TRUE(trie.empty());
+}
+
 TEST(IteratorTest, Begin) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
