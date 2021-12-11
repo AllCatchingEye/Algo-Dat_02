@@ -109,7 +109,31 @@ public:
  }
 
  void insert(const value_type& value) {
-   auto tmp(value); //FIXME Dummy-Implementierung korrigieren
+   E finalSymbol = FINAL_SYMBOL;
+
+   auto key = value.first;
+   Branch* branch = root;
+
+   for (auto keyIt = key.begin(); keyIt != key.end(); keyIt++) {
+     const auto childIt = branch->children.find(*keyIt);
+
+     if (childIt != branch->children.end()) {
+       branch = static_cast<Branch*>(childIt->second);
+     } else {
+       auto newBranch = new Branch();
+       branch->children[*keyIt] = newBranch;
+       branch = newBranch;
+     }
+   }
+
+   const auto childIt = branch->children.find(finalSymbol);
+
+   if (childIt != branch->children.end()) {
+     delete childIt->second;
+     childIt->second = new Leaf(value);
+   } else {
+     branch->children[finalSymbol] = new Leaf(value);
+   }
  }
 
  void erase(const key_type& value) {
