@@ -95,9 +95,11 @@ public:
  };
 
  Trie() {
+   root = new Branch();
  }
 
  ~Trie() {
+   delete root;
  }
 
  typedef TrieIterator iterator;
