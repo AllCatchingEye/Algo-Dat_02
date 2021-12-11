@@ -206,8 +206,8 @@ public:
  }
 };
 
-template <class E>
-ostream& operator << (ostream& ostr, const Trie<E>& trie)     {trie.printOn(ostr); return ostr;}
+template <class T, class E>
+ostream& operator << (ostream& ostr, const Trie<T, E>& trie)     {trie.printOn(ostr); return ostr;}
 
 
 
