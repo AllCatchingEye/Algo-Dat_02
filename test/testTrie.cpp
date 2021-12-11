@@ -17,6 +17,14 @@ TEST(BasicTest, InsertSimple) {
     EXPECT_FALSE(trie.empty());
 }
 
+TEST(BasicTest, PrintEmpty) {
+    Trie<string> trie;
+    stringstream strstr;
+    strstr << trie;
+    string res;
+    EXPECT_STREQ(res.c_str(), strstr.str().c_str());
+}
+
 TEST(BasicTest, InsertPrint) {
     Trie<string> trie;
     Trie<string>::value_type t("wer", "who");
