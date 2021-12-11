@@ -137,7 +137,35 @@ public:
  }
 
  void erase(const key_type& value) {
-   auto tmp(value); //FIXME Dummy-Implementierung korrigieren
+   function<void(Branch*, const key_type&)> remove = [&remove](Branch* branch, const key_type& value){
+     if (value.size() == 0) {
+       E key = FINAL_SYMBOL;
+
+       const auto childIterator = branch->children.find(key);
+
+       if (childIterator != branch->children.end()) {
+         delete childIterator->second;
+         branch->children.erase(key);
+       }
+     } else {
+       E key = value.at(0);
+
+       const auto childIterator = branch->children.find(key);
+
+       if (childIterator != branch->children.end()) {
+         auto child = static_cast<Branch*>(childIterator->second);
+
+         remove(child, value.substr(1));
+
+         if (child->empty()) {
+           delete child;
+           branch->children.erase(key);
+         }
+       }
+     }
+   };
+
+   remove(root, value);
  }
 
  void clear() {
