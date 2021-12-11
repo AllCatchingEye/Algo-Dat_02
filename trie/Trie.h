@@ -215,8 +215,13 @@ public:
  }
 
  iterator find(const key_type& testElement) {
-   auto tmp(testElement);
-   return iterator();  //FIXME Dummy-Implementierung korrigieren
+   for (iterator it = begin(); it != end(); ++it) {
+     if ((*it).first == testElement) {
+       return it;
+     }
+   }
+
+   return end();
  }
 
  iterator begin() {
