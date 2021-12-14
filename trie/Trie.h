@@ -9,6 +9,7 @@
 #define SRC_TRIE_H_
 
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -81,7 +82,7 @@ public:
      }
    };
 
-   typedef vector<PathElement> Path;
+   typedef stack<PathElement> Path;
 
    Path path;
 
@@ -90,7 +91,7 @@ public:
    }
 
    value_type operator *() {
-     return static_cast<Leaf*>(path[path.size() - 1].iterator->second)->data;
+     return static_cast<Leaf*>(path.top().iterator->second)->data;
    }
 
    bool operator !=(const iterator& rhs) const {
@@ -102,7 +103,7 @@ public:
    }
 
    iterator& operator ++() {
-     PathElement* element = &path[path.size() - 1];
+     PathElement* element = &path.top();
      ++element->iterator;
 
      while(true) {
@@ -113,17 +114,17 @@ public:
            PathElement newElement;
            newElement.branch = static_cast<Branch*>(element->iterator->second);
            newElement.iterator = newElement.branch->children.begin();
-           path.push_back(newElement);
+           path.push(newElement);
 
-           element = &path[path.size() - 1];
+           element = &path.top();
          }
        } else {
-         path.pop_back();
+         path.pop();
 
          if (path.empty()) {
            return *this;
          } else {
-           element = &path[path.size() - 1];
+           element = &path.top();
            ++element->iterator;
          }
        }
@@ -236,10 +237,10 @@ public:
    element.iterator = root->children.begin();
 
    typename iterator::Path path;
-   path.push_back(element);
+   path.push(element);
 
    while (true) {
-     element = path[path.size() - 1];
+     element = path.top();
 
      if (element.iterator->first == FINAL_SYMBOL) {
        iterator it;
@@ -250,7 +251,7 @@ public:
        nextElement.branch = static_cast<Branch*>(element.iterator->second);
        nextElement.iterator = nextElement.branch->children.begin();
 
-       path.push_back(nextElement);
+       path.push(nextElement);
      }
    }
  }
