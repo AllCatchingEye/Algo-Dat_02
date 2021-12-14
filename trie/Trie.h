@@ -60,7 +60,7 @@ private:
    }
  };
 
- Branch *root;
+ Branch *root = nullptr;
 
 public:
  class TrieIterator {
@@ -139,7 +139,7 @@ public:
  };
 
  Trie() {
-   root = new Branch();
+
  }
 
  ~Trie() {
@@ -149,10 +149,14 @@ public:
  typedef TrieIterator iterator;
 
  bool empty() const {
-   return root->empty();
+   return root == nullptr;
  }
 
  void insert(const value_type& value) {
+   if (empty()) {
+     root = new Branch();
+   }
+
    E finalSymbol = FINAL_SYMBOL;
 
    auto key = value.first;
@@ -181,6 +185,10 @@ public:
  }
 
  void erase(const key_type& value) {
+   if (empty()) {
+     return;
+   }
+
    function<void(Branch*, const key_type&)> remove = [&remove](Branch* branch, const key_type& value){
      if (value.size() == 0) {
        E key = FINAL_SYMBOL;
@@ -210,11 +218,15 @@ public:
    };
 
    remove(root, value);
+
+   if (root->empty()) {
+     clear();
+   }
  }
 
  void clear() {
    delete root;
-   root = new Branch();
+   root = nullptr;
  }
 
  iterator find(const key_type& testElement) {
@@ -228,7 +240,7 @@ public:
  }
 
  iterator begin() {
-   if (root->empty()) {
+   if (empty()) {
      return end();
    }
 
@@ -261,6 +273,10 @@ public:
  }
 
  void printOn(ostream& ostr) const {
+   if (!root) {
+     return;
+   }
+
    function<void(Branch*, int)> print = [&print, &ostr](Branch* branch, int depth){
      for (auto childIt = branch->children.begin(); childIt != branch->children.end(); childIt++) {
        for (int i = 0; i < depth; i++) {
