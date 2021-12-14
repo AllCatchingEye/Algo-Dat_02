@@ -61,30 +61,32 @@ private:
 
  Branch *root;
 
- struct PathElement {
-   Branch* branch;
-   typename map<E, Node*>::iterator iterator;
-
-   bool operator==(const PathElement& rhs) const {
-     return branch == rhs.branch && iterator == rhs.iterator;
-   }
-
-   bool operator!=(const PathElement& rhs) const {
-     return !(rhs == *this);
-   }
- };
-
- typedef vector<PathElement> Path;
-
 public:
  class TrieIterator {
+  private:
+   friend Trie;
+
    typedef TrieIterator iterator;
 
-  private:
+   struct PathElement {
+     Branch* branch;
+     typename map<E, Node*>::iterator iterator;
+
+     bool operator==(const PathElement& rhs) const {
+       return branch == rhs.branch && iterator == rhs.iterator;
+     }
+
+     bool operator!=(const PathElement& rhs) const {
+       return !(rhs == *this);
+     }
+   };
+
+   typedef vector<PathElement> Path;
+
    Path path;
 
   public:
-   explicit TrieIterator(Path path): path(path) {
+   TrieIterator() {
    }
 
    value_type operator *() {
@@ -229,20 +231,22 @@ public:
      return end();
    }
 
-   PathElement element;
+   typename iterator::PathElement element;
    element.branch = root;
    element.iterator = root->children.begin();
 
-   Path path = Path();
+   typename iterator::Path path;
    path.push_back(element);
 
    while (true) {
      element = path[path.size() - 1];
 
      if (element.iterator->first == FINAL_SYMBOL) {
-       return iterator(path);
+       iterator it;
+       it.path = path;
+       return it;
      } else {
-       PathElement nextElement;
+       typename iterator::PathElement nextElement;
        nextElement.branch = static_cast<Branch*>(element.iterator->second);
        nextElement.iterator = nextElement.branch->children.begin();
 
@@ -252,7 +256,7 @@ public:
  }
 
  iterator end() {
-   return iterator(Path());
+   return iterator();
  }
 
  void printOn(ostream& ostr) const {
