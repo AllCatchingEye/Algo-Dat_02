@@ -31,9 +31,12 @@ private:
  };
 
  class Leaf : public Node {
-  public:
+   friend Trie;
+
+  private:
    value_type data;
 
+  public:
    explicit Leaf(value_type data) : data(data) {
 
    }
@@ -46,9 +49,12 @@ private:
  };
 
  class Branch: public Node {
-  public:
+   friend Trie;
+
+  private:
    map<E, Node*> children;
 
+  public:
    ~Branch() {
      for (auto it = children.begin(); it != children.end(); it++) {
        delete it->second;
@@ -64,9 +70,8 @@ private:
 
 public:
  class TrieIterator {
-  private:
    friend Trie;
-
+  private:
    typedef TrieIterator iterator;
 
    struct PathElement {
