@@ -244,3 +244,9 @@ TEST(FindTest, NotFound) {
     EXPECT_EQ(it, trie.end());
 }
 
+TEST(FindTest, NotFoundOnEmpty) {
+    Trie<string> trie;
+    Trie<string>::iterator it = trie.find("wer");
+    EXPECT_EQ(it, trie.end());
+}
+
