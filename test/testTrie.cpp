@@ -84,6 +84,12 @@ TEST(BasicTest, EraseSimple) {
     EXPECT_TRUE(trie.empty());
 }
 
+TEST(BasicTest, EraseEmpty) {
+  Trie<string> trie;
+  trie.erase("wer");
+  EXPECT_TRUE(trie.empty());
+}
+
 TEST(BasicTest, EraseFail) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
