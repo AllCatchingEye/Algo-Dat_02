@@ -120,6 +120,20 @@ TEST(BasicTest, EraseComplex) {
     EXPECT_STREQ(res.c_str(), strstr.str().c_str());
 }
 
+TEST(BasicTest, EraseEmptyString) {
+  Trie<string> trie;
+  Trie<string>::value_type t1("wer", "who");
+  trie.insert(t1);
+  trie.erase("");
+  stringstream strstr;
+  strstr << trie;
+  string res("w\n"
+      "  e\n"
+      "    r\n"
+      "      :who\n");
+  EXPECT_STREQ(res.c_str(), strstr.str().c_str());
+}
+
 TEST(BasicTest, Clear) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
