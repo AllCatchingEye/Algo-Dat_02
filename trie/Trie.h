@@ -77,6 +77,14 @@ public:
    struct PathElement {
      Branch* branch;
      typename map<E, Node*>::iterator iterator;
+
+     bool operator==(const PathElement& rhs) const {
+       return branch == rhs.branch && iterator == rhs.iterator;
+     }
+
+     bool operator!=(const PathElement& rhs) const {
+       return !(rhs == *this);
+     }
    };
 
    typedef stack<PathElement> Path;
@@ -96,9 +104,7 @@ public:
    }
 
    bool operator ==(const iterator& rhs) const {
-     return (path.empty() == rhs.path.empty()) &&
-            (path.empty() ||
-             path.top().iterator->second == rhs.path.top().iterator->second);
+     return path == rhs.path;
    }
 
    iterator& operator ++() {

@@ -164,18 +164,6 @@ TEST(IteratorTest, BeginIsEnd) {
   EXPECT_TRUE(trie.begin() == trie.end());
 }
 
-TEST(IteratorTest, Unequal) {
-  Trie<string> trie;
-  Trie<string>::value_type t1("wer", "who");
-  Trie<string>::value_type t2("wir", "we");
-  trie.insert(t1);
-  trie.insert(t2);
-  Trie<string>::iterator it1 = trie.begin();
-  Trie<string>::iterator it2 = it1++;
-  EXPECT_TRUE(it1 != it2);
-  EXPECT_FALSE(it1 == it2);
-}
-
 TEST(IteratorTest, Star) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
@@ -230,6 +218,7 @@ TEST(IteratorTest, ForLoop) {
     }
     EXPECT_TRUE(count==3);
 }
+
 
 TEST(FindTest, Found) {
     Trie<string> trie;
