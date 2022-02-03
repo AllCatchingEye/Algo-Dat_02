@@ -17,6 +17,14 @@ TEST(BasicTest, InsertSimple) {
     EXPECT_FALSE(trie.empty());
 }
 
+TEST(BasicTest, PrintEmpty) {
+    Trie<string> trie;
+    stringstream strstr;
+    strstr << trie;
+    string res;
+    EXPECT_STREQ(res.c_str(), strstr.str().c_str());
+}
+
 TEST(BasicTest, InsertPrint) {
     Trie<string> trie;
     Trie<string>::value_type t("wer", "who");
@@ -76,6 +84,12 @@ TEST(BasicTest, EraseSimple) {
     EXPECT_TRUE(trie.empty());
 }
 
+TEST(BasicTest, EraseEmpty) {
+  Trie<string> trie;
+  trie.erase("wer");
+  EXPECT_TRUE(trie.empty());
+}
+
 TEST(BasicTest, EraseFail) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
@@ -106,6 +120,20 @@ TEST(BasicTest, EraseComplex) {
     EXPECT_STREQ(res.c_str(), strstr.str().c_str());
 }
 
+TEST(BasicTest, EraseEmptyString) {
+  Trie<string> trie;
+  Trie<string>::value_type t1("wer", "who");
+  trie.insert(t1);
+  trie.erase("");
+  stringstream strstr;
+  strstr << trie;
+  string res("w\n"
+      "  e\n"
+      "    r\n"
+      "      :who\n");
+  EXPECT_STREQ(res.c_str(), strstr.str().c_str());
+}
+
 TEST(BasicTest, Clear) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
@@ -118,11 +146,22 @@ TEST(BasicTest, Clear) {
     EXPECT_TRUE(trie.empty());
 }
 
+TEST(BasicTest, ClearEmpty) {
+    Trie<string> trie;
+    trie.clear();
+    EXPECT_TRUE(trie.empty());
+}
+
 TEST(IteratorTest, Begin) {
     Trie<string> trie;
     Trie<string>::value_type t1("wer", "who");
     trie.insert(t1);
     EXPECT_TRUE(trie.begin() != trie.end());
+}
+
+TEST(IteratorTest, BeginIsEnd) {
+  Trie<string> trie;
+  EXPECT_TRUE(trie.begin() == trie.end());
 }
 
 TEST(IteratorTest, Star) {
@@ -205,6 +244,12 @@ TEST(FindTest, NotFound) {
     trie.insert(t3);
 
     Trie<string>::iterator it = trie.find("unknown_key");
+    EXPECT_EQ(it, trie.end());
+}
+
+TEST(FindTest, NotFoundOnEmpty) {
+    Trie<string> trie;
+    Trie<string>::iterator it = trie.find("wer");
     EXPECT_EQ(it, trie.end());
 }
 
